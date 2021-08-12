@@ -88,3 +88,7 @@
         (if (neg? exponent)
           (reduce / 1 (repeat (- exponent) 2N))
           (reduce * (repeat exponent 2N))))))
+
+(defn decode-ascii-str
+  [b-seq]
+  (->> b-seq (take-while (complement zero?)) (map char) (reduce str)))

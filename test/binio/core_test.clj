@@ -95,3 +95,38 @@
         (if (> (abs (decode-slong b0)) (abs (decode-slong b1)))
           (> (abs res) 1)
           (<= (abs res) 1))))))
+
+(defspec float32-sign-test 300
+  (do (println "Float32 sign test: The decoded float has the proper sign")
+    (prop/for-all [b0-pos (gen/such-that (complement neg?) gen/byte 20)
+                   b0-neg (gen/such-that neg? gen/byte)
+                   b1 (gen/vector gen/byte 3)]
+      (and (not (neg? (decode-float32 (cons b0-pos b1))))
+           (neg? (decode-float32 (cons b0-neg b1)))))))
+
+#_(defspec float32-limit-test 500
+    (do (println "Float32 limit test: The decoded float has a value between specified limits")
+     (prop/for-all [b (gen/such-that #(not (zero? (reduce + %))) (gen/vector gen/byte 4))]
+       (let [[b0 b1 & _] b
+             exp-bin (concat (rest (encode-bits (decode-ubyte b0))) (take 1 (encode-bits (decode-ubyte b1))))
+             exp (- (decode-bits exp-bin) 127)
+             res (decode-float32 b)]
+          (if (neg? exp)
+            (and (< (float (reduce / 1 (repeat (abs exp) 2N))) (abs res))
+                 (>= (reduce / 1 (repeat (inc (abs exp)) 2N)) (abs res)))
+            (and (< (reduce * (repeat exp 2N)) (abs res))
+                 (>= (reduce * (repeat (inc exp) 2N)) (abs res))))))))
+
+
+(defspec float32-mantissa-error-test 500
+  (do (println "Float32 mantissa error test: The computed manitssa of two consecutive bytes is smaller than 1.1920929E-7")
+    (prop/for-all [b0 (gen/elements [0 0x80])
+                   b1 (gen/such-that (complement neg?) gen/byte 20)
+                   [b2 b3] (gen/vector gen/byte 2)]
+      (> 1.1920929E-7 (abs (- (decode-float32 [b0 b1 b2 (inc b3)]) (decode-float32 [b0 b1 b2 b3])))))))
+
+(defspec ascii-string-no-read-after-null 2000
+  (do (println "Ascii string null byte test: The decoded string does not include substring after the null byte")
+    (prop/for-all [s0 (gen/list (gen/such-that pos? gen/byte 30))
+                   s1 (gen/list (gen/such-that pos? gen/byte 30))]
+      (= (decode-ascii-str s0) (decode-ascii-str (concat s0 [0] s1))))))
