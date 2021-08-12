@@ -1,4 +1,4 @@
-(defproject nighcoder/binio "0.1.1-SNAPSHOT"
+(defproject org.clojars.nighcoder/binio "0.1.1-SNAPSHOT"
   :description "Read and write bytes from and to file"
   :url "https://github.com/nighcoder/binio"
   :license {:name "MIT"

@@ -1,4 +1,4 @@
-(ns binio.core
+(ns org.clojars.nighcoder.binio.core
   (:require [clojure.java.io :as io])
   (:import [java.io ByteArrayOutputStream FileOutputStream IOException]))
 

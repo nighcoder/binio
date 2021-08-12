@@ -1,11 +1,10 @@
-(ns binio.core-test
+(ns org.clojars.nighcoder.binio.core-test
   (:require clojure.test
             [clojure.test.check :as tc]
             [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :as prop]
             [clojure.test.check.clojure-test :refer [defspec]]
-            [binio.core :refer :all]))
-
+            [org.clojars.nighcoder.binio.core :refer :all]))
 
 (defn ubyte?
   [n]
