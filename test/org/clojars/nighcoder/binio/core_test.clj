@@ -98,7 +98,7 @@
 (defspec float32-sign-test 300
   (do (println "Float32 sign test: The decoded float has the proper sign")
     (prop/for-all [b0-pos (gen/such-that (complement neg?) gen/byte 20)
-                   b0-neg (gen/such-that neg? gen/byte)
+                   b0-neg (gen/such-that neg? gen/byte 20)
                    b1 (gen/vector gen/byte 3)]
       (and (not (neg? (decode-float32 (cons b0-pos b1))))
            (neg? (decode-float32 (cons b0-neg b1)))))))
