@@ -4,7 +4,10 @@ A Clojure library for reading and writing binary files.
 
 ## Usage
 
-Add the dependency [nighcoder/binio "0.1.0"] to your project.
+[![Clojars Project](https://img.shields.io/clojars/v/org.clojars.nighcoder/binio.svg)](https://clojars.org/org.clojars.nighcoder/binio)
+
+Add the dependency [nighcoder/binio "0.1.1"] to your project.
+
 Require the binio.core namespace.
 
 `(require '[binio.core :as bio])`
